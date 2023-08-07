@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Management Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome, {{ session['username'] }}!</h1>
+    <h2>Add Employee</h2>
+    <button id="add-employee-button" onclick="toggleEmployeeForm()">Add Employee</button>
+    <div id="employee-details-form" style="display: none;">
+    <form action="/dashboard" method="post">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required><br>
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required><br>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br>
+        <label for="experience">Experience:</label>
+        <input type="number" id="experience" name="experience" step="0.1" required><br>
+        <label for="salary">Salary:</label>
+        <input type="number" id="salary" name="salary" step="0.01" required><br>
+        <label for="skills">Skills:</label>
+        <input type="text" id="skills" name="skills"><br>
+        <label for="qualifications">Qualifications:</label>
+        <input type="text" id="qualifications" name="qualifications"><br>
+        <input type="submit" value="Add Employee">
+    </form>
+    </div>
+    <h2>Employee Records</h2>
+    <!-- Add search section -->
+    <div class="search-section">
+        <label for="search_employee">Search by Name:</label>
+        <input type="text" id="search_employee" onkeyup="searchEmployees()" placeholder="Enter employee name">
+    </div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+            <th>Experience</th>
+            <th>Salary</th>
+            <th>Skills</th>
+            <th>Qualifications</th>
+            <th>Actions</th>
+        </tr>
+        {% for employee in employees %}
+            <tr>
+                <td>{{ employee.id }}</td>
+                <td>{{ employee.first_name }}</td>
+                <td>{{ employee.last_name }}</td>
+                <td>{{ employee.age }}</td>
+                <td>{{ employee.experience }}</td>
+                <td>{{ employee.salary }}</td>
+                <td>{{ employee.skills }}</td>
+                <td>{{ employee.qualifications }}</td>
+                <td>
+                    <a href="/update/{{ employee.id }}">Update</a>
+                    <form action="/delete/{{ employee.id }}" method="post">
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <script>
+        function toggleEmployeeForm() {
+            const form = document.getElementById('employee-details-form');
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        }
+
+        function searchEmployees() {
+            const input = document.getElementById('search_employee');
+            const filter = input.value.trim().toLowerCase();
+            const table = document.getElementsByTagName('table')[0];
+            const rows = table.getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                const firstName = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
+                const lastName = rows[i].getElementsByTagName('td')[2].innerText.toLowerCase();
+                if (firstName.includes(filter) || lastName.includes(filter)) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+    <!-- Logout link -->
+    <div class="logout">
+        <a href="/logout">Logout</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Employee</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Update Employee</h1>
+    <form method="POST" action="/update/{{ employee.id }}">
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" value="{{ employee.first_name }}"><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" value="{{ employee.last_name }}"><br>
+
+        <label for="age">Age:</label>
+        <input type="text" name="age" value="{{ employee.age|default('') }}"><br>
+
+        <label for="experience">Experience (in years):</label>
+        <input type="text" name="experience" value="{{ employee.experience|default('') }}"><br>
+
+        <label for="salary">Salary:</label>
+        <input type="text" name="salary" value="{{ employee.salary|default('') }}"><br>
+
+        <label for="skills">Skills:</label>
+        <input type="text" name="skills" value="{{ employee.skills|default('') }}"><br>
+
+        <label for="qualifications">Qualifications:</label>
+        <input type="text" name="qualifications" value="{{ employee.qualifications|default('') }}"><br>
+
+        <!-- Add any other input fields you want for other employee details -->
+
+        <input type="submit" value="Update">
+    </form>
+</body>
+</html>
